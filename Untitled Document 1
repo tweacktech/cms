@@ -1,0 +1,55 @@
+Schema::create('authors', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->timestamps();
+});
+
+Schema::create('blogs', function (Blueprint $table) {
+    $table->id();
+    $table->string('title');
+    $table->foreignId('author_id')->constrained();
+    $table->timestamps();
+});
+
+Schema::create('posts', function (Blueprint $table) {
+    $table->id();
+    $table->string('title');
+    $table->text('body');
+    $table->foreignId('blog_id')->constrained();
+    $table->timestamps();
+});
+
+Schema::create('views', function (Blueprint $table) {
+    $table->id();
+    $table->morphs('viewable');
+    $table->timestamps();
+});
+
+Schema::create('clicks', function (Blueprint $table) {
+    $table->id();
+    $table->morphs('clickable');
+    $table->timestamps();
+});
+
+Schema::create('earnings', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('author_id')->constrained();
+    $table->foreignId('post_id')->constrained();
+    $table->float('amount')->default(0);
+    $table->timestamps();
+});
+
+Schema::create('admins', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('email')->unique();
+    $table->string('password');
+    $table->unsignedTinyInteger('level')->default(1);
+    $table->timestamps();
+});
+In this updated migration code, there is a new admins table that contains the information for the site's administrators. The level column determines the level of privilege of each admin, where a level of 1 indicates a lower level of privilege (e.g., can only add authors and blogs) and a level of 2 indicates a higher level of privilege (e.g., can add posts and view earnings).
+
+
+
+
+
